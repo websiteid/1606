@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zee App | Dashboard Premium</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100vh;
+            width: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f4f6;
+            overflow: hidden; 
+        }
+
+        .full-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(0,0,0,0.7));
+            z-index: 2;
+        }
+
+        /* LAYOUT UTAMA */
+        .app-layout {
+            position: relative;
+            width: 90%;
+            max-width: 400px; 
+            height: 100vh;
+            margin: 0 auto; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* NOTIFIKASI */
+        #login-notif {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 15px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            visibility: hidden;
+        }
+
+        .stiker-bear {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+        }
+
+        .notif-text {
+            color: #111827;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* =========================================
+           CARD DASHBOARD - PREMIUM NEW LOOK
+           ========================================= */
+        .glass-card-premium {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 35px;
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+            /* Efek Outline Halus */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            transform: translateY(-20px); 
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efek kilauan di sudut card */
+        .glass-card-premium::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .avatar-container {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, #ff4d6d, #fac1d1, #ff758c);
+            background-size: 200% 200%;
+            animation: gradientBorder 4s ease infinite;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            background: white;
+        }
+
+        /* 1. Welcome Back - Subtitle Lebih Aesthetic */
+        .welcome-sub {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            background: linear-gradient(135deg, #6b7280, #374151);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        /* 2. Nama User - TULISAN BERGERAK & BERGRADIEN */
+        .moving-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 2.8rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            
+            /* Warna Gradien */
+            background: linear-gradient(to right, #ff4d6d 0%, #ff758c 25%, #4f46e5 50%, #ff758c 75%, #ff4d6d 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Animasi Gerak Warna */
+            animation: shine 3s linear infinite, pulseSlow 2s ease-in-out infinite;
+        }
+
+        .welcome-desc {
+            color: #4b5563;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.6;
+            padding: 0 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Tombol Modern */
+        .btn-premium {
+            background: linear-gradient(135deg, #111827 0%, #374151 100%);
+            color: white;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            padding: 14px 35px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #ff4d6d 0%, #ff758c 100%);
+        }
+
+        .btn-premium:active {
+            transform: scale(0.97);
+        }
+
+        /* =========================================
+           NAVBAR BUMBU (DIPERBAIKI RESPONSIF)
+           ========================================= */
+        .nav-bottom {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%; 
+            height: 70px; /* Sedikit dikecilkan agar pas */
+            display: flex;
+            justify-content: center; /* Pake center biar rapat */
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            padding: 0 10px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            max-width: 60px; /* Batasi lebar per item */
+        }
+
+        .nav-icon {
+            width: 26px; /* Sedikit dikecilkan karena 6 ikon */
+            height: 26px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+
+        /* Efek Zoom 100% pas Mouse Geser (Tetap Dipertahankan) */
+        .nav-item:hover .nav-icon {
+            transform: scale(1.7) translateY(-8px);
+        }
+
+        /* =========================================
+           SISTEM HUJAN STIKER (SPAM PARTY)
+           ========================================= */
+        #sticker-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Biar gak bisa diklik */
+            z-index: 5; /* Di atas overlay, di bawah card/nav */
+            overflow: hidden;
+        }
+
+        .spam-sticker {
+            position: absolute;
+            bottom: -100px; /* Mulai dari bawah layar */
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: floatUpParty 4s linear forwards;
+        }
+
+        /* =========================================
+           KEYFRAMES ANIMASI
+           ========================================= */
+        
+        /* Animasi kilau warna tulisan */
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Animasi denyut halus tulisan */
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.95; }
+        }
+
+        /* Animasi border gradien avatar */
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animasi stiker terbang ke atas */
+        @keyframes floatUpParty {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg); /* Terbang sampe atas */
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <img src="p1.png" class="full-bg">
+    <div class="overlay"></div>
+
+    <div id="sticker-container"></div>
+
+    <div class="app-layout">
+        
+        <div id="login-notif" class="animate__animated">
+            <img src="https://cdn-icons-png.flaticon.com/512/7871/7871500.png" class="stiker-bear">
+            <div class="notif-text">
+                Ups! Akses ditolak. <br>Kamu harus login dulu di Zee App ya.. ✨
+            </div>
+        </div>
+
+        <div class="glass-card-premium animate__animated animate__zoomIn">
+            <div class="avatar-container">
+                <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="avatar-img">
+            </div>
+
+            <p class="welcome-sub">Welcome Back ✨</p>
+            
+            <h1 class="moving-name" id="displayName">Zee User</h1>
+
+            <p class="welcome-desc">
+                Senang melihatmu kembali. <br>Yuk, jelajahi aktivitas serumu hari ini!
+            </p>
+
+            <div>
+                <button class="btn-premium">
+                    Explore Now
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav-bottom animate__animated animate__fadeInUp animate__delay-1s">
+            <a href="dashboard.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/7648/7648203.png" class="nav-icon">
+            </a>
+            <a href="cari.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/954/954591.png" class="nav-icon">
+            </a>
+            <a href="pesan.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/668/668287.png" class="nav-icon">
+            </a>
+            <a href="game.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/808/808476.png" class="nav-icon">
+            </a>
+            <a href="helpdesk.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/8662/8662591.png" class="nav-icon">
+            </a>
+            <a href="profil.html" class="nav-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/9187/9187604.png" class="nav-icon">
+            </a>
+        </nav>
+    </div>
+
+<script>
+        (function() {
+            const secretName = localStorage.getItem('userSecretName');
+            const avatarUrl = localStorage.getItem('userAvatar');
+            const notif = document.getElementById('login-notif');
+
+            // 1. VALIDASI LOGIN
+            if (!secretName || secretName === "undefined") {
+                window.onload = () => {
+                    notif.style.visibility = 'visible';
+                    notif.classList.add('animate__fadeInDown'); 
+
+                    setTimeout(() => {
+                        notif.classList.replace('animate__fadeInDown', 'animate__fadeOutUp');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 800);
+                    }, 10000); 
+                };
+                return;
+            }
+
+            // 2. SET DATA & JALANKAN EFEK
+            document.addEventListener("DOMContentLoaded", function() {
+                // Set Nama dan Avatar
+                document.getElementById('displayName').innerText = secretName;
+                if (avatarUrl && avatarUrl !== "undefined") {
+                    document.getElementById('userAvatar').src = avatarUrl;
+                }
+
+                // JALANKAN SPAM STIKER CINTA TERUS MENERUS
+                setInterval(spawnSticker, 350); // Kecepatan muncul (350ms)
+            });
+
+            function spawnSticker() {
+                const container = document.getElementById('sticker-container');
+                if (!container) return;
+
+                // DAFTAR STIKER BARU (Hati, Smile, Love You)
+                const stickerLinks = [
+                    'https://cdn-icons-png.flaticon.com/512/10174/10174277.png', // Heart
+                    'https://cdn-icons-png.flaticon.com/512/6782/6782784.png',   // Smile
+                    'https://cdn-icons-png.flaticon.com/512/11171/11171133.png', // Love you 1
+                    'https://cdn-icons-png.flaticon.com/512/4360/4360005.png',   // Love you 2
+                    'https://cdn-icons-png.flaticon.com/512/6782/6782726.png',   // Wink
+                    'https://cdn-icons-png.flaticon.com/512/6782/6782720.png',   // Smile Blushing
+                    'https://cdn-icons-png.flaticon.com/512/8143/8143884.png',   // Love you hand
+                    'https://cdn-icons-png.flaticon.com/512/9553/9553174.png',   // For you
+                    'https://cdn-icons-png.flaticon.com/512/7024/7024195.png'    // Fall in love
+                ];
+
+                const img = document.createElement('img');
+                img.src = stickerLinks[Math.floor(Math.random() * stickerLinks.length)];
+                img.classList.add('spam-sticker');
+
+                // ATUR POSISI & GERAKAN LURUS
+                const leftPos = Math.random() * 90; // Biar gak mepet banget ke kanan (0-90%)
+                const size = Math.random() * (50 - 35) + 35; // Ukuran stiker (35px - 50px)
+                const duration = Math.random() * (6 - 4) + 4; // Durasi terbang (4 - 6 detik)
+
+                img.style.left = leftPos + '%';
+                img.style.width = size + 'px';
+                img.style.height = 'auto';
+                img.style.animationDuration = duration + 's';
+                img.style.opacity = "0.9";
+                
+                // Pastikan tegak lurus
+                img.style.transform = "rotate(0deg)";
+
+                container.appendChild(img);
+
+                // Hapus stiker setelah sampai atas agar ringan
+                setTimeout(() => {
+                    img.remove();
+                }, duration * 1000);
+            }
+
+        })();
+    </script>
+</body>
+</html>
